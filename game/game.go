@@ -1,13 +1,21 @@
 package game
 
 import (
+	"fmt"
 	"image/color"
+	"log"
+	"net"
 	"sync"
 
 	"github.com/WeAreInSpace/Gopher-Runner/base/player"
+	"github.com/WeAreInSpace/Gopher-Runner/camera"
 	"github.com/WeAreInSpace/Gopher-Runner/config"
+	"github.com/WeAreInSpace/Gopher-Runner/network"
+	"github.com/WeAreInSpace/Gopher-Runner/packet"
+	"github.com/WeAreInSpace/Gopher-Runner/resources"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
@@ -15,6 +23,16 @@ type Game struct {
 	Mx     *sync.Mutex
 	Config *config.Config
 	Player *player.Player
+	Camera *camera.Camera
+
+	Conn          net.Conn
+	Ib            *packet.Inbound
+	Og            *packet.Outgoing
+	PacketManager *network.PacketManager
+
+	screen  *ebiten.Image
+	screenW float64
+	screenH float64
 }
 
 func (g *Game) Update() error {
@@ -43,18 +61,73 @@ func (g *Game) Update() error {
 		g.Mx.Unlock()
 	}
 
+	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
+		g.Mx.Lock()
+		g.Player.X -= 1
+		g.Mx.Unlock()
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
+		g.Mx.Lock()
+		g.Player.X += 1
+		g.Mx.Unlock()
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
+		g.Mx.Lock()
+		g.Player.Y -= 1
+		g.Mx.Unlock()
+	}
+
+	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyShift) {
+		g.Mx.Lock()
+		g.Player.X += 1.5
+		g.Mx.Unlock()
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyShift) {
+		g.Mx.Lock()
+		g.Player.X -= 1.5
+		g.Mx.Unlock()
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyShift) {
+		g.Mx.Lock()
+		g.Player.Y += 1.5
+		g.Mx.Unlock()
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyS) && ebiten.IsKeyPressed(ebiten.KeyShift) {
+		g.Mx.Lock()
+		g.Player.Y -= 1.5
+		g.Mx.Unlock()
+	}
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyF5) {
+		log.Println("Reloading MOTD")
+		g.PacketManager.GetMOTD()
+	}
+
+	g.Camera.FollowTarget(g.Player.X+16, g.Player.Y+16, g.screenW, g.screenH)
+
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	g.screen = screen
+	screen.Fill(color.RGBA{65, 201, 226, 255})
 	imageOpts := ebiten.DrawImageOptions{}
-	screen.Fill(color.RGBA{0, 150, 255, 255})
+
+	imageOpts.GeoM.Translate(0, 0)
+	imageOpts.GeoM.Translate(g.Camera.X, g.Camera.Y)
+	screen.DrawImage(resources.GetImage(resources.Gopher), &imageOpts)
+	imageOpts.GeoM.Reset()
 
 	imageOpts.GeoM.Translate(g.Player.X, g.Player.Y)
+	imageOpts.GeoM.Translate(g.Camera.X, g.Camera.Y)
 	screen.DrawImage(g.Player.Image, &imageOpts)
 	imageOpts.GeoM.Reset()
+
+	ebitenutil.DebugPrint(screen, fmt.Sprintf("%4.f", ebiten.ActualFPS()))
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return outsideWidth / 2, outsideHeight / 2
+	g.screenW = float64(outsideWidth / 4)
+	g.screenH = float64(outsideHeight / 4)
+	return outsideWidth / 4, outsideHeight / 4
 }

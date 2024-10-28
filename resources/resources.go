@@ -8,7 +8,11 @@ import (
 )
 
 const (
-	Player_Gopher = "./assets/gopher/gopher.png"
+	Icon16 string = "./assets/icon/16.png"
+	Icon32 string = "./assets/icon/32.png"
+
+	Gopher        string = "./assets/gopher/gopher.png"
+	Player_Gopher string = "./assets/gopher/gopher_front.png"
 )
 
 func GetImage(imagePath string) *ebiten.Image {
