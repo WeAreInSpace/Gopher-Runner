@@ -3,7 +3,6 @@ package game
 import (
 	"fmt"
 	"image/color"
-	"log"
 	"net"
 	"sync"
 
@@ -20,7 +19,9 @@ import (
 )
 
 type Game struct {
-	Mx     *sync.Mutex
+	Mx *sync.Mutex
+	Wg *sync.WaitGroup
+
 	Config *config.Config
 	Player *player.Player
 	Camera *camera.Camera
@@ -43,64 +44,70 @@ func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		g.Mx.Lock()
 		g.Player.X -= 2
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) {
 		g.Mx.Lock()
 		g.Player.X += 2
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		g.Mx.Lock()
 		g.Player.Y -= 2
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.Y += 2
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.X -= 1
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.X += 1
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.Y -= 1
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.X += 1.5
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.X -= 1.5
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.Y += 1.5
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyS) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.Y -= 1.5
+		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
 		g.Mx.Unlock()
-	}
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyF5) {
-		log.Println("Reloading MOTD")
-		g.PacketManager.GetMOTD()
 	}
 
 	g.Camera.FollowTarget(g.Player.X+16, g.Player.Y+16, g.screenW, g.screenH)

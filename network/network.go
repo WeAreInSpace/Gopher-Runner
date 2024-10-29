@@ -3,7 +3,6 @@ package network
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net"
 
@@ -46,8 +45,8 @@ func (pm *PacketManager) GetMOTD() error {
 		string1 := motd.ReadString()
 		string2 := motd.ReadString()
 
-		fmt.Println(string1)
-		fmt.Println(string2)
+		log.Println(string1)
+		log.Println(string2)
 	}
 
 	return nil
@@ -102,24 +101,21 @@ func (pm *PacketManager) Handshake(phs PlayerHandshake, playerHandshakeEvent cha
 	return nil
 }
 
-func (pm *PacketManager) FollowPlayer() error {
-	fristPacket := pm.Og.Write()
-	sentFristPacketE := fristPacket.Sent(packet.WriteInt32(0))
-	if sentFristPacketE != nil {
-		return sentFristPacketE
+func (pm *PacketManager) FollowPlayer(playerX, playerY int64) error {
+	playId := pm.Og.Write()
+	sentPlayIdE := playId.Sent(packet.WriteInt32(1))
+	if sentPlayIdE != nil {
+		return sentPlayIdE
 	}
 
-	motdId, motd, readMotdE := pm.Ib.Read()
-	if readMotdE != nil {
-		return readMotdE
-	}
+	playerPos := pm.Og.Write()
 
-	if motdId == 2 {
-		string1 := motd.ReadString()
-		string2 := motd.ReadString()
+	playerPos.WriteInt64(playerX)
+	playerPos.WriteInt64(playerY)
 
-		fmt.Println(string1)
-		fmt.Println(string2)
+	sentPlayerPos := playerPos.Sent(packet.WriteInt32(2))
+	if sentPlayerPos != nil {
+		return sentPlayerPos
 	}
 	return nil
 }

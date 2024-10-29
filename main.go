@@ -23,6 +23,7 @@ import (
 func main() {
 	log.Println("Loading library, please wait.")
 	var mx sync.Mutex
+	var wg sync.WaitGroup
 
 	log.Println("Loading game config.")
 	gormConfig := gorm.Config{
@@ -89,6 +90,10 @@ func main() {
 	}
 
 	playerHandshakeEvent := make(chan string)
+
+	log.Println("Reloading MOTD")
+	packetManager.GetMOTD()
+
 	go func() {
 		handshakeE := packetManager.Handshake(
 			network.PlayerHandshake{
@@ -106,7 +111,9 @@ func main() {
 
 	playerGopher := resources.GetImage(resources.Player_Gopher)
 	game := game.Game{
-		Mx:     &mx,
+		Mx: &mx,
+		Wg: &wg,
+
 		Config: config,
 
 		PacketManager: &packetManager,
@@ -125,9 +132,10 @@ func main() {
 			Health: 10,
 		},
 	}
-	runGameE := ebiten.RunGame(&game)
 	log.Println("Loaded game struct")
 	log.Println("The game will be in your screen. :)")
+
+	runGameE := ebiten.RunGame(&game)
 	if runGameE != nil {
 		log.Fatal(runGameE)
 	}
