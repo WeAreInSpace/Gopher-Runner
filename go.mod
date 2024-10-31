@@ -9,6 +9,7 @@ require (
 )
 
 require (
+	github.com/WeAreInSpace/Dot-IO v0.0.0-20241031014344-df182e093bac // indirect
 	github.com/ebitengine/gomobile v0.0.0-20241016134836-cc2e38a7c0ee // indirect
 	github.com/ebitengine/hideconsole v1.0.0 // indirect
 	github.com/ebitengine/purego v0.8.1 // indirect

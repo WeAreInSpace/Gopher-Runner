@@ -6,18 +6,18 @@ import (
 	"log"
 	"net"
 
-	"github.com/WeAreInSpace/Gopher-Runner/packet"
+	"github.com/WeAreInSpace/Dot-IO"
 )
 
-func HandleConn(address string) (conn net.Conn, ib packet.Inbound, og packet.Outgoing) {
+func HandleConn(address string) (conn net.Conn, ib dotio.Inbound, og dotio.Outgoing) {
 	conn, dialE := net.Dial("tcp", address)
 	if dialE != nil {
 		log.Fatal(dialE)
 	}
-	ib = packet.Inbound{
+	ib = dotio.Inbound{
 		Conn: conn,
 	}
-	og = packet.Outgoing{
+	og = dotio.Outgoing{
 		Conn: conn,
 	}
 	return conn, ib, og
@@ -25,13 +25,13 @@ func HandleConn(address string) (conn net.Conn, ib packet.Inbound, og packet.Out
 
 type PacketManager struct {
 	Conn net.Conn
-	Ib   *packet.Inbound
-	Og   *packet.Outgoing
+	Ib   *dotio.Inbound
+	Og   *dotio.Outgoing
 }
 
 func (pm *PacketManager) GetMOTD() error {
 	fristPacket := pm.Og.Write()
-	sentFristPacketE := fristPacket.Sent(packet.WriteInt32(0))
+	sentFristPacketE := fristPacket.Sent(dotio.WriteInt32(0))
 	if sentFristPacketE != nil {
 		return sentFristPacketE
 	}
@@ -59,7 +59,7 @@ type PlayerHandshake struct {
 
 func (pm *PacketManager) Handshake(phs PlayerHandshake, playerHandshakeEvent chan string) error {
 	reqLogin := pm.Og.Write()
-	reqLoginE := reqLogin.Sent(packet.WriteInt32(1))
+	reqLoginE := reqLogin.Sent(dotio.WriteInt32(1))
 	if reqLoginE != nil {
 		playerHandshakeEvent <- "ERR"
 		return reqLoginE
@@ -74,7 +74,7 @@ func (pm *PacketManager) Handshake(phs PlayerHandshake, playerHandshakeEvent cha
 
 	login.WriteString(string(playerData))
 
-	sentLoginE := login.Sent(packet.WriteInt32(1))
+	sentLoginE := login.Sent(dotio.WriteInt32(1))
 	if sentLoginE != nil {
 		playerHandshakeEvent <- "ERR"
 		return sentLoginE
@@ -103,7 +103,7 @@ func (pm *PacketManager) Handshake(phs PlayerHandshake, playerHandshakeEvent cha
 
 func (pm *PacketManager) FollowPlayer(playerX, playerY int64) error {
 	playId := pm.Og.Write()
-	sentPlayIdE := playId.Sent(packet.WriteInt32(1))
+	sentPlayIdE := playId.Sent(dotio.WriteInt32(1))
 	if sentPlayIdE != nil {
 		return sentPlayIdE
 	}
@@ -113,7 +113,7 @@ func (pm *PacketManager) FollowPlayer(playerX, playerY int64) error {
 	playerPos.WriteInt64(playerX)
 	playerPos.WriteInt64(playerY)
 
-	sentPlayerPos := playerPos.Sent(packet.WriteInt32(2))
+	sentPlayerPos := playerPos.Sent(dotio.WriteInt32(2))
 	if sentPlayerPos != nil {
 		return sentPlayerPos
 	}

@@ -65,6 +65,7 @@ func main() {
 	ebiten.SetWindowResizingMode(
 		ebiten.WindowResizingModeEnabled,
 	)
+	ebiten.SetTPS(40)
 
 	_, iconImage16, newIconImage16E := ebitenutil.NewImageFromFile(resources.Icon16)
 	if newIconImage16E != nil {

@@ -6,11 +6,11 @@ import (
 	"net"
 	"sync"
 
+	"github.com/WeAreInSpace/Dot-IO"
 	"github.com/WeAreInSpace/Gopher-Runner/base/player"
 	"github.com/WeAreInSpace/Gopher-Runner/camera"
 	"github.com/WeAreInSpace/Gopher-Runner/config"
 	"github.com/WeAreInSpace/Gopher-Runner/network"
-	"github.com/WeAreInSpace/Gopher-Runner/packet"
 	"github.com/WeAreInSpace/Gopher-Runner/resources"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -27,8 +27,8 @@ type Game struct {
 	Camera *camera.Camera
 
 	Conn          net.Conn
-	Ib            *packet.Inbound
-	Og            *packet.Outgoing
+	Ib            *dotio.Inbound
+	Og            *dotio.Outgoing
 	PacketManager *network.PacketManager
 
 	screen  *ebiten.Image
