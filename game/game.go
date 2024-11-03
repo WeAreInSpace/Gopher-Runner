@@ -6,12 +6,12 @@ import (
 	"net"
 	"sync"
 
-	"github.com/WeAreInSpace/Dot-IO"
 	"github.com/WeAreInSpace/Gopher-Runner/base/player"
 	"github.com/WeAreInSpace/Gopher-Runner/camera"
 	"github.com/WeAreInSpace/Gopher-Runner/config"
 	"github.com/WeAreInSpace/Gopher-Runner/network"
 	"github.com/WeAreInSpace/Gopher-Runner/resources"
+	"github.com/WeAreInSpace/dotio"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -44,69 +44,69 @@ func (g *Game) Update() error {
 	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		g.Mx.Lock()
 		g.Player.X -= 2
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) {
 		g.Mx.Lock()
 		g.Player.X += 2
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		g.Mx.Lock()
 		g.Player.Y -= 2
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.Y += 2
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.X -= 1
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.X += 1
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyControl) && !ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.Mx.Lock()
 		g.Player.Y -= 1
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 
 	if ebiten.IsKeyPressed(ebiten.KeyA) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.X += 1.5
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyD) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.X -= 1.5
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyW) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.Y += 1.5
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 	if ebiten.IsKeyPressed(ebiten.KeyS) && ebiten.IsKeyPressed(ebiten.KeyShift) {
 		g.Mx.Lock()
 		g.Player.Y -= 1.5
-		g.PacketManager.FollowPlayer(int64(g.Player.X), int64(g.Player.Y))
+		g.PacketManager.FollowPlayer(g.Player.X, g.Player.Y)
 		g.Mx.Unlock()
 	}
 

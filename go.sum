@@ -1,13 +1,13 @@
-github.com/WeAreInSpace/Dot-IO v0.0.0-20241031014344-df182e093bac h1:cFgPjAEavKFXh5M9sdLYMBnRhR9ne2b7NmsceHeq7uA=
-github.com/WeAreInSpace/Dot-IO v0.0.0-20241031014344-df182e093bac/go.mod h1:9rZFkoXUtQGjT+oGlDdPjZfRjRvDG+MU/GhNr3bVUx0=
+github.com/WeAreInSpace/dotio v0.0.0-20241102062858-cf49a0229af0 h1:qADSliQjA0dCWHOLWKlomg7g68WnVfu4UQZGcWihG/0=
+github.com/WeAreInSpace/dotio v0.0.0-20241102062858-cf49a0229af0/go.mod h1:JY9a4dWK4xbURFrGjOC7qoIMrrNgoPBR5eD5AmuA7VU=
 github.com/ebitengine/gomobile v0.0.0-20241016134836-cc2e38a7c0ee h1:YoNt0DHeZ92kjR78SfyUn1yEf7KnBypOFlFZO14cJ6w=
 github.com/ebitengine/gomobile v0.0.0-20241016134836-cc2e38a7c0ee/go.mod h1:ZDIonJlTRW7gahIn5dEXZtN4cM8Qwtlduob8cOCflmg=
 github.com/ebitengine/hideconsole v1.0.0 h1:5J4U0kXF+pv/DhiXt5/lTz0eO5ogJ1iXb8Yj1yReDqE=
 github.com/ebitengine/hideconsole v1.0.0/go.mod h1:hTTBTvVYWKBuxPr7peweneWdkUwEuHuB3C1R/ielR1A=
 github.com/ebitengine/purego v0.8.1 h1:sdRKd6plj7KYW33EH5As6YKfe8m9zbN9JMrOjNVF/BE=
 github.com/ebitengine/purego v0.8.1/go.mod h1:iIjxzd6CiRiOG0UyXP+V1+jWqUXVjPKLAI0mRfJZTmQ=
-github.com/hajimehoshi/ebiten/v2 v2.8.2 h1:cvZ5d3LSVFzvcSZVGjTPyV43DzWzJWbwy1b+2V5zJPI=
-github.com/hajimehoshi/ebiten/v2 v2.8.2/go.mod h1:SXx/whkvpfsavGo6lvZykprerakl+8Uo1X8d2U5aAnA=
+github.com/hajimehoshi/ebiten/v2 v2.8.3 h1:AKHqj3QbQMzNEhK33MMJeRwXm9UzftrUUo6AWwFV258=
+github.com/hajimehoshi/ebiten/v2 v2.8.3/go.mod h1:SXx/whkvpfsavGo6lvZykprerakl+8Uo1X8d2U5aAnA=
 github.com/jezek/xgb v1.1.1 h1:bE/r8ZZtSv7l9gk6nU0mYx51aXrvnyb44892TwSaqS4=
 github.com/jezek/xgb v1.1.1/go.mod h1:nrhwO0FX/enq75I7Y7G8iN1ubpSGZEiA3v9e9GyRFlk=
 github.com/jinzhu/inflection v1.0.0 h1:K317FqzuhWc8YvSVlFMCCUb36O/S9MCKRDI7QkRKD/E=

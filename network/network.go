@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/WeAreInSpace/Dot-IO"
+	"github.com/WeAreInSpace/dotio"
 )
 
 func HandleConn(address string) (conn net.Conn, ib dotio.Inbound, og dotio.Outgoing) {
@@ -101,7 +101,7 @@ func (pm *PacketManager) Handshake(phs PlayerHandshake, playerHandshakeEvent cha
 	return nil
 }
 
-func (pm *PacketManager) FollowPlayer(playerX, playerY int64) error {
+func (pm *PacketManager) FollowPlayer(playerX, playerY float64) error {
 	playId := pm.Og.Write()
 	sentPlayIdE := playId.Sent(dotio.WriteInt32(1))
 	if sentPlayIdE != nil {
@@ -110,8 +110,8 @@ func (pm *PacketManager) FollowPlayer(playerX, playerY int64) error {
 
 	playerPos := pm.Og.Write()
 
-	playerPos.WriteInt64(playerX)
-	playerPos.WriteInt64(playerY)
+	playerPos.WriteFloat64(playerX)
+	playerPos.WriteFloat64(playerY)
 
 	sentPlayerPos := playerPos.Sent(dotio.WriteInt32(2))
 	if sentPlayerPos != nil {
